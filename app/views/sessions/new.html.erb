@@ -1,0 +1,8 @@
+<div>
+    <h2>Join Demo Meeting</h2>
+
+    <%= form_for :anything, url: sessions_join_path do |form| %>
+        <%= form.text_field :name %>
+        <%= form.submit "Join Meeting" %>
+    <% end  %>
+</div>
