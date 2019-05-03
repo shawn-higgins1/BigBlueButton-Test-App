@@ -1,8 +1,12 @@
-<div>
+<div class="container">
     <h2>Join Demo Meeting</h2>
-
-    <%= form_for :anything, url: sessions_join_path do |form| %>
-        <%= form.text_field :name %>
-        <%= form.submit "Join Meeting" %>
-    <% end  %>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <%= form_for :user, url: sessions_join_path do |form| %>
+                <%= form.label :name %>
+                <%= form.text_field :name %>
+                <%= form.submit "Join Meeting", class: "btn btn-primary" %>
+            <% end  %>
+        </div>
+    </div>
 </div>

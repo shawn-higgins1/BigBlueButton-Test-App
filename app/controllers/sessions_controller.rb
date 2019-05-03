@@ -7,10 +7,10 @@ class SessionsController < ApplicationController
     def join
         begin
             initBBBApi()
-          
+
             meeting_name = "Demo Meeting"
             meeting_id = "demo-meeting"
-            moderator_name = params[:anything][:name]
+            moderator_name = params[:user][:name]
             
             options = { :moderatorPW => "54321",
                 :attendeePW => "12345",
@@ -25,9 +25,9 @@ class SessionsController < ApplicationController
 
             @join_url = @api.join_meeting_url(meeting_id, moderator_name, options[:moderatorPW])
             redirect_to @join_url
-            
+
         rescue Exception => ex
-            flash.now[:error] = "Failed with error #{ex.message}"
+            flash.now[:danger] = "Failed with error #{ex.message}"
             render "new"
         end
     end
