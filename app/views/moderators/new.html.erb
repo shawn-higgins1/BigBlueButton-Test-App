@@ -1,0 +1,22 @@
+<h2>Join a Session</h2>
+
+<div class = "container">
+  <div class="row">
+    <div class="col col-md-offset-3">
+      <%= form_for (@moderator) do |f| %>
+        <%= render 'shared/error_messages', model: @moderator %>
+
+        <%= f.label :meeting_id, "Select the meeting you wish to join"%>
+        <%= select("selected_meeting", "meeting_id", @meetings.collect {|m|  [m[:meetingName], m[:meetingID]] }, { include_blank: true })%>
+        
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+
+        <%= f.submit "Join the session", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>

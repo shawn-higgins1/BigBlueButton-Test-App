@@ -10,8 +10,6 @@ class SessionsController < ApplicationController
             @session = Session.new(session_params)
 
             if (@session.save)
-                initBBBApi()
-
                 meeting_name = params[:session][:name]
                 meeting_id = params[:session][:meeting_id]
                 
@@ -22,17 +20,18 @@ class SessionsController < ApplicationController
                     :logoutURL => params[:session][:logoutURL],
                     :maxParticipants => params[:session][:maxParticipants] }
                 
-                #@api.create_meeting(meeting_name, meeting_id, options)
+                bbb.create_meeting(meeting_name, meeting_id, options)
                     
                 if (params[:session][:join_session].to_i == 1)
                     if (!params[:session][:moderator_name].empty?)
-                        url = @api.join_meeting_url(meeting_id, params[:session][:moderator_name], options[:moderatorPW])
+                        url = bbb.join_meeting_url(meeting_id, params[:session][:moderator_name], options[:moderatorPW])
                         redirect_to url
                     else
                         flash.now[:danger] = "To automatically join a session you must provide a moderator name"
                         render 'new'
                     end
                 else 
+                    flash[:success] = "Successfuly created meeting #{meeting_name}"
                     redirect_to root_path
                 end
             else
@@ -47,8 +46,8 @@ class SessionsController < ApplicationController
     private
 
         def session_params 
-            params.require(:session).permit(:name, :meeting_id, :moderatorPW, 
-                :attendeePW, :welcomeMSG, :dialNum, :logoutURL, :maxParticipants, 
+            params.require(:session).permit(:name, :meeting_id, :moderatorPw, 
+                :attendeePw, :welcomeMSG, :dialNum, :logoutURL, :maxParticipants, 
                 :join_session, :moderator_name)
         end
 end

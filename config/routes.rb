@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   get  '/home',    to: 'recordings#home'
   
   resources :sessions
-  resources :moderator
+  resources :moderators
 end

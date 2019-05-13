@@ -1,38 +1,40 @@
 class ModeratorsController < ApplicationController
-    def def new
-        initBBBApi()
-
-        @moderator = moderator.new
-        @meetings = @api.get_meetings
+    def new
+        @moderator = Moderator.new
+        @meetings = bbb.get_meetings[:meetings]
     end
     
     def create
         begin
-            initBBBApi()
+            @moderator = Moderator.new(moderator_params)
+            @meetings = bbb.get_meetings[:meetings]
 
-            meeting_name = "Demo Meeting"
-            meeting_id = "demo-meeting"
-            moderator_name = params[:session][:name]
+            if @moderator.save
+                meeting_id = params[:selected_meeting][:meeting_id]
+                if(meeting_id.empty?)
+                    flash.now[:danger] = "You must select a meeting to join"
+                    render 'new'
+                else                 
+                    if !bbb.is_meeting_running?(meeting_id)
+                        options = { :moderatorPW => @moderator.password }
+                        bbb.create_meeting(meeting_id, meeting_id, options)
+                    end
 
-            puts moderator_name
-            
-            options = { :moderatorPW => "54321",
-                :attendeePW => "12345",
-                :welcome => 'Welcome to my meeting',
-                :dialNumber => '1-800-000-0000x00000#',
-                :logoutURL => 'https://github.com/mconf/bigbluebutton-api-ruby',
-                :maxParticipants => 25 }
-
-            if !@api.is_meeting_running?(meeting_id)
-                @api.create_meeting(meeting_name, meeting_id, options)
+                    join_url = bbb.join_meeting_url(meeting_id, @moderator.name, @moderator.password)
+                    redirect_to join_url
+                end
+            else
+                render 'new'
             end
-
-            @join_url = @api.join_meeting_url(meeting_id, moderator_name, options[:moderatorPW])
-            redirect_to @join_url
-
         rescue Exception => ex
             flash.now[:danger] = "Failed with error #{ex.message}"
             render "new"
         end 
     end
+
+    private
+
+        def moderator_params 
+            params.require(:moderator).permit(:name, :password)
+        end
 end
