@@ -8,4 +8,58 @@
             <%= button_to "Join a Session", new_moderator_path, method: :get, class: "btn btn-primary" %>
         </div>
     </div>
+    <div class="row">
+        <table class="table table-hover table-outline table-vcenter text-nowrap card-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Length</th>
+                    <th>Users</th>
+                    <th>Visibilty</th>
+                    <th>Format</th>
+                    <th>Delete Recording</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if @recordings.empty?%>
+                    <tr>
+                        <td colspan="6" class="text-center h4" >There are no recordings on this server</td>
+                    </tr>
+                <% else %>
+                    <% @recordings.each do |recording| %>
+                        <tr>
+                            <td>
+                                <% if recording[:metadata][:name] %>
+                                    <%= recording[:metadata][:name] %>
+                                <% else %>
+                                    <%= recording[:name] %>
+                                <% end %>
+                            </td>
+                            <td id="recording-length" class="text-left" data-full-length="<%=recording[:playbacks].first[:length]%>">
+                                <%= recording_length(recording[:playbacks]) %>
+                            </td>
+                            <td class="text-left">
+                                <%= recording[:participants] || "-" %>
+                            </td>
+                            <td>
+                                <% if recording[:metadata][:"gl-listed"] == "true"%>
+                                    Public
+                                <% else %>
+                                    Private
+                                <% end %>
+                            </td>
+                            <td>
+                                <% sorted_formats =  recording[:playbacks].sort_by! {|p| p[:type]} %>
+                                <%= sorted_formats.collect{ |p| p[:type]}.join(", ")%>
+                            </td>
+                            <td>
+                                <%= link_to '<i style="color:red" class="fas fa-minus-circle"></i>'.html_safe, 
+                                    'recordings/' + recording[:recordID], method: :delete, data: { confirm: "You sure?" } %>
+                            </td>
+                        </tr>
+                    <% end %>
+                <% end %>
+            </tbody>
+        <table>
+    </div>
 </div>

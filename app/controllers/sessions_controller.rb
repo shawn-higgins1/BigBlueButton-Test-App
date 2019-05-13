@@ -18,7 +18,8 @@ class SessionsController < ApplicationController
                     :welcome => params[:session][:welcomeMSG],
                     :dialNumber => params[:session][:dialNum],
                     :logoutURL => params[:session][:logoutURL],
-                    :maxParticipants => params[:session][:maxParticipants] }
+                    :maxParticipants => params[:session][:maxParticipants], 
+                    :record => true}
                 
                 bbb.create_meeting(meeting_name, meeting_id, options)
                     
