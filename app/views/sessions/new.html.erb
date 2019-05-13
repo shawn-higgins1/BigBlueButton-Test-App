@@ -1,12 +1,44 @@
-<div class="container">
-    <h2>Join Demo Meeting</h2>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <%= form_for :user, url: sessions_join_path do |form| %>
-                <%= form.label :name %>
-                <%= form.text_field :name %>
-                <%= form.submit "Join Meeting", class: "btn btn-primary" %>
-            <% end  %>
+<h2>Create a Session</h2>
+<div class = "container">
+  <div class="row">
+    <div class="col col-md-offset-3">
+      <%= form_for (@session) do |f| %>
+        <%= render 'shared/error_messages' %>
+
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+
+        <%= f.label :meeting_id, "Meeting ID"%>
+        <%= f.text_field :meeting_id %>
+
+        <%= f.label :welcomeMSG, "Welcome Message" %>
+        <%= f.text_field :welcomeMSG %>
+
+        <%= f.label :dialNum, "Dial Number" %>
+        <%= f.text_field :dialNum %>
+
+        <%= f.label :logoutURL, "Lougout URL" %>
+        <%= f.text_field :logoutURL %>
+
+        <%= f.label :maxParticipants, "Max Participants" %>
+        <%= f.number_field :logoutURL %>
+
+        <%= f.label :moderatorPw, "Moderator Password"  %>
+        <%= f.password_field :moderatorPw %>
+
+        <%= f.label :attendeePw, "Attendee Password" %>
+        <%= f.password_field :attendeePw %>
+
+        <%= f.label :join_session, "Immediately join the session?"%>
+        <%= f.check_box :join_session%>
+
+        <div id="moderator_details" style="display:none;">
+          <%= f.label :moderator_name %>
+          <%= f.text_field :moderator_name %>
         </div>
+
+        <%= f.submit "Create a new session", class: "btn btn-primary" %>
+      <% end %>
     </div>
+  </div>
 </div>

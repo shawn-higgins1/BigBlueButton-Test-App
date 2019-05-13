@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root 'sessions#new'
-
-  post 'sessions/join'
+  root 'recordings#index'
+  get  '/home',    to: 'recordings#home'
+  
+  resources :sessions
+  resources :moderator
 end
