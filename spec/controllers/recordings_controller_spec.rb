@@ -1,71 +1,73 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 describe RecordingsController, type: :controller do
     context "Get #index" do
         it "should get index" do
             allow_any_instance_of(BigBlueButton::BigBlueButtonApi).to receive(:get_recordings).and_return(
-                recordings: [
-                    {
-                        name: "Example",
-                        participants: "3",
-                        playback: {
-                          format:
-                          {
-                            type: "presentation"
-                          }
-                        },
-                        metadata: {
-                          "gl-listed": "true",
+              recordings: [
+                {
+                  name: "Example",
+                      participants: "3",
+                      playback: {
+                        format:
+                        {
+                          type: "presentation"
                         }
+                      },
+                      metadata: {
+                        "gl-listed": "true",
+                      }
+                },
+                {
+                  name: "aExamaaa",
+                    participants: "5",
+                    playback: {
+                      format:
+                      {
+                        type: "other"
+                      }
                     },
-                    {
-                        name: "aExamaaa",
-                        participants: "5",
-                        playback: {
-                          format:
-                          {
-                            type: "other"
-                          }
-                        },
-                        metadata: {
-                          "gl-listed": "false",
-                        }
+                    metadata: {
+                      "gl-listed": "false",
                     }
-                ]
+                }
+              ]
             )
-            
+
             get :index
 
             expect(response).to render_template(:index)
             expect(assigns(:recordings)).to eq(
-                [
-                    {
-                        name: "aExamaaa",
-                        participants: "5",
-                        playbacks:
+              [
+                {
+                  name: "aExamaaa",
+                      participants: "5",
+                      playbacks:
+                      [
+                        {
+                          type: "other"
+                        }
+                      ],
+                      metadata: {
+                        "gl-listed": "false",
+                      }
+                },
+                {
+                  name: "Example",
+                    participants: "3",
+                    playbacks:
                         [
-                            {
-                                type: "other"
-                            }
+                          {
+                            type: "presentation"
+                          }
                         ],
-                        metadata: {
-                            "gl-listed": "false",
-                        }
-                    },
-                    {
-                        name: "Example",
-                        participants: "3",
-                        playbacks:
-                            [
-                                {
-                                    type: "presentation"
-                                }
-                            ],  
-                        metadata: {
-                            "gl-listed": "true",
-                        }
+                    metadata: {
+                      "gl-listed": "true",
                     }
-                ]
+                }
+              ]
             )
         end
     end
@@ -75,7 +77,7 @@ describe RecordingsController, type: :controller do
             allow_any_instance_of(BigBlueButton::BigBlueButtonApi).to receive(:delete_recordings).and_return(true)
 
             delete :destroy, params: { id: 1 }
-        
+
             expect(response).to redirect_to root_path
             expect(flash[:success]).to be_present
         end

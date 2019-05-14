@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "rails_helper"
 
 describe SessionsController, type: :controller do
@@ -14,7 +16,7 @@ describe SessionsController, type: :controller do
         render_views
 
         it 'should fail to save session' do
-            post :create, params: {session: {name: "test", meeting_id: "test"}}
+            post :create, params: { session: { name: "test", meeting_id: "test" } }
 
             expect(response).to render_template(:new)
             expect(response.body).to include 'The form contains 2 errors'
@@ -27,23 +29,26 @@ describe SessionsController, type: :controller do
         end
 
         it 'should successfully create a session' do
-            post :create, params: {session: {name: "test", meeting_id: "test", moderatorPw: "a", attendeePw: "a"}}
+            post :create, params: { session: { name: "test", meeting_id: "test", moderatorPw: "a", attendeePw: "a" } }
 
             expect(response).to redirect_to root_path
             expect(flash[:success]).to be_present
         end
 
         it 'should fail to automatically join the meeting' do
-            post :create, params: {session: {name: "test", meeting_id: "test", moderatorPw: "a", attendeePw: "a", moderator_name: "", join_session: 1}}
+            post :create, params: { session: { name: "test", meeting_id: "test", moderatorPw: "a",
+                attendeePw: "a", moderator_name: "", join_session: 1 } }
 
             expect(response).to redirect_to root_path
             expect(flash[:danger]).to be_present
         end
 
         it 'should successfully join the meeting' do
-            allow_any_instance_of(BigBlueButton::BigBlueButtonApi).to receive(:join_meeting_url).and_return("https://blindsidenetworks.com/")
+            allow_any_instance_of(BigBlueButton::BigBlueButtonApi).to receive(:join_meeting_url)
+              .and_return("https://blindsidenetworks.com/")
 
-            post :create, params: {session: {name: "test", meeting_id: "test", moderatorPw: "a", attendeePw: "a", moderator_name: "test", join_session: 1}}
+            post :create, params: { session: { name: "test", meeting_id: "test", moderatorPw: "a",
+                attendeePw: "a", moderator_name: "test", join_session: 1 } }
 
             expect(response).to redirect_to "https://blindsidenetworks.com/"
         end

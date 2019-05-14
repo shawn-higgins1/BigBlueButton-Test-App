@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'boot'
 
 require 'rails/all'
@@ -21,7 +23,7 @@ module SampleApp
     config.bigbluebutton_secret_default = "d9b1a3bb339a88eb23191ed7154b5cde" || "8cd8ef52e8e101574e400365b55e11a6"
 
     # Use standalone BigBlueButton server.
-    config.bigbluebutton_endpoint =  config.bigbluebutton_endpoint_default
+    config.bigbluebutton_endpoint = config.bigbluebutton_endpoint_default
     config.bigbluebutton_secret = config.bigbluebutton_secret_default
   end
 end
