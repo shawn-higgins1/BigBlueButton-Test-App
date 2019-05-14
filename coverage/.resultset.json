@@ -212,6 +212,16 @@
         1,
         1
       ],
+      "/home/shawn/Documents/sample_app/config/spring.rb": [
+        null,
+        null,
+        1,
+        null,
+        null,
+        null,
+        null,
+        4
+      ],
       "/home/shawn/Documents/sample_app/config/environments/test.rb": [
         null,
         null,
@@ -858,6 +868,6 @@
         null
       ]
     },
-    "timestamp": 1557853381
+    "timestamp": 1557859701
   }
 }
