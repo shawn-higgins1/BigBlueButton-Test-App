@@ -15,12 +15,7 @@ class ModeratorsController < ApplicationController
                     flash.now[:danger] = "You must select a meeting to join"
                     render 'new'
                 else                 
-                    if !bbb.is_meeting_running?(meeting_id)
-                        options = { :moderatorPW => @moderator.password }
-                        bbb.create_meeting(meeting_id, meeting_id, options)
-                    end
-
-                    join_url = bbb.join_meeting_url(meeting_id, @moderator.name, @moderator.password)
+                    join_url = bbb.join_meeting_url(meeting_id, @moderator.name, @moderator.password, {:joinViaHtml5 => true})
                     redirect_to join_url
                 end
             else

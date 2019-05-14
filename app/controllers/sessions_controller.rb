@@ -25,11 +25,11 @@ class SessionsController < ApplicationController
                     
                 if (params[:session][:join_session].to_i == 1)
                     if (!params[:session][:moderator_name].empty?)
-                        url = bbb.join_meeting_url(meeting_id, params[:session][:moderator_name], options[:moderatorPW])
+                        url = bbb.join_meeting_url(meeting_id, params[:session][:moderator_name], options[:moderatorPW], {:joinViaHtml5 => true})
                         redirect_to url
                     else
-                        flash.now[:danger] = "To automatically join a session you must provide a moderator name"
-                        render 'new'
+                        flash[:danger] = "The session was created but, couldn't be joined because no moderator name was provided"
+                        redirect_to root_path
                     end
                 else 
                     flash[:success] = "Successfuly created meeting #{meeting_name}"
