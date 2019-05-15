@@ -1,0 +1,20 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+  web:
+    entrypoint: [bin/start]
+    image: bigbluebutton/test-app
+    container_name: test-app
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - ./db/production:/var/www/app/db/production
+      - ./log:/var/www/app/log
+      - ./public:/var/www/app/public
+    depends_on:
+      - db
+    ports:      
+      - 5050:3000
