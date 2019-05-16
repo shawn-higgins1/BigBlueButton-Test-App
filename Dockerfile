@@ -2,6 +2,8 @@ ARG MASTER_KEY=""
 
 FROM ruby:2.6.3
 
+ARG MASTER_KEY
+
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresql-client curl
 
 ADD https://dl.yarnpkg.com/debian/pubkey.gpg /tmp/yarn-pubkey.gpg
@@ -24,12 +26,11 @@ ENV RAILS_ENV production
 # Adding project files.
 COPY . .
 
-RUN if [ "${MASTER_KEY}" != "" ]; then export RAILS_MASTER_KEY=$MASTER_KEY; fi
+RUN if [ "${MASTER_KEY}" != "" ]; then echo "${MASTER_KEY}"; export RAILS_MASTER_KEY="${MASTER_KEY}"; fi
 
 # Install gems.
 RUN bundle install --without development test --deployment --clean && \
 bundle exec rake assets:precompile
-
 
 EXPOSE 3000
 
