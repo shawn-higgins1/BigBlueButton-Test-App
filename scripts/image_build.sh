@@ -65,17 +65,23 @@ elif [ ! -z $CD_COMMIT_SHA ]; then
   sed -i "s/VERSION =.*/VERSION = \"$CD_REF_NAME ($(expr substr $CD_COMMIT_SHA 1 8))\"/g" config/initializers/version.rb
 fi
 
-# Build the image
-echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being built"
-docker build -t $CD_DOCKER_REPO:$CD_REF_NAME .
-
 if [ -z "$CD_DOCKER_USERNAME" ] || [ -z "$CD_DOCKER_PASSWORD" ]; then
   echo "#### Docker image for $CD_DOCKER_REPO can't be published because CD_DOCKER_USERNAME or CD_DOCKER_PASSWORD are missing"
   exit 0
 fi
 
-# Publish the image
+# Loggin to docker hub
 docker login -u="$CD_DOCKER_USERNAME" -p="$CD_DOCKER_PASSWORD"
+
+# Pull the image
+echo "#### Pulling Docker image $CD_DOCKER_REPO:$CD_REF_NAME"
+#docker pull $CD_DOCKER_REPO:$CD_REF_NAME
+
+# Build the image
+echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being built"
+docker build -t $CD_DOCKER_REPO:$CD_REF_NAME .
+
+
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
 docker push $CD_DOCKER_REPO
 
