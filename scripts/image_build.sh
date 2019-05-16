@@ -83,7 +83,7 @@ docker build -t $CD_DOCKER_REPO:$CD_REF_NAME .
 
 
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
-docker push $CD_DOCKER_REPO
+docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
 
 # Publish latest and v2 if it id a release
 if [[ "$CD_REF_NAME" == *"release"* ]]; then
