@@ -25,8 +25,7 @@ COPY . .
 RUN bundle install --without development test --deployment --clean
 
 # Precompile assets.
-RUN bundle exec rake assets:clean
-RUN bundle exec rake assets:precompile
+RUN SECRET_KEY_BASE=build bundle exec rake assets:precompile
 
 EXPOSE 3000
 
