@@ -74,15 +74,25 @@ fi
 docker login -u="$CD_DOCKER_USERNAME" -p="$CD_DOCKER_PASSWORD"
 
 # Pull the image
-echo "#### Pulling Docker image $CD_DOCKER_REPO:$CD_REF_NAME"
+echo "#### Pulling Docker image $CD_DOCKER_USERNAME/$CD_DOCKER_REPO"
 docker pull $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
 
 # Build the image
-echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being built"
-docker build --build-arg MASTER_KEY=$RAILS_MASTER_KEY -t $CD_DOCKER_REPO:$CD_REF_NAME .
+echo "#### Docker image  $CD_DOCKER_USERNAME/$CD_DOCKER_REPO is being built"
+docker build --build-arg MASTER_KEY=$RAILS_MASTER_KEY -t  $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest .
 
-echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
-docker tag $CD_DOCKER_REPO:$CD_REF_NAME $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
+echo "#### Docker image $CD_DOCKER_USERNAME/$CD_DOCKER_REPO is being published"
 docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
+
+# Pull the image
+echo "#### Pulling Docker image $CD_DOCKER_USERNAME/nginx"
+docker pull $CD_DOCKER_USERNAME/nginx
+
+# Build the image
+echo "#### Docker image $CD_DOCKER_USERNAME/nginx is being built"
+docker build -t $CD_DOCKER_USERNAME/nginx:latest ./nginx
+
+echo "#### Docker image $CD_DOCKER_USERNAME/nginx is being published"
+docker push $CD_DOCKER_USERNAME/nginx:latest
 
 exit 0

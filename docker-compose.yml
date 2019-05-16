@@ -13,8 +13,18 @@ services:
     volumes:
       - ./db/production:/var/www/app/db/production
       - ./log:/var/www/app/log
-      - ./public:/var/www/app/public
+      - .asset-volume:/var/www/app/public
     depends_on:
       - db
-    ports:      
-      - 5050:3000
+  nginx:
+    image: shawnhiggins/nginx
+    container_name: nginx
+    volumes:
+      - ./log:/var/www/app/log
+      - .asset-volume:/var/www/app/public
+    depends_on:
+      - web
+    ports:
+      - 5050:5050
+volumes:
+  asset-volume: ./public

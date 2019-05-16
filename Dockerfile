@@ -30,7 +30,7 @@ ENV RAILS_MASTER_KEY ${MASTER_KEY}
 
 # Install gems.
 RUN bundle install --without development test --deployment --clean && \
-bundle exec rake assets:precompile
+SECRET_KEY_BASE=`bundle exec rake secret` bundle exec rake assets:precompile
 
 EXPOSE 3000
 
