@@ -2,11 +2,11 @@ FROM ruby:2.6.3
 RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresql-client curl
 
 ADD https://dl.yarnpkg.com/debian/pubkey.gpg /tmp/yarn-pubkey.gpg
-RUN apt-key add /tmp/yarn-pubkey.gpg && rm /tmp/yarn-pubkey.gpg
-RUN echo 'deb http://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 
-RUN apt-get update && apt-get install -y nodejs yarn
+RUN apt-key add /tmp/yarn-pubkey.gpg && rm /tmp/yarn-pubkey.gpg && \
+echo 'deb http://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list &&  \
+curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+apt-get update && apt-get install -y nodejs yarn
 
 # Set an environment variable for the install location.
 ENV RAILS_ROOT /var/www/app
@@ -25,7 +25,7 @@ COPY . .
 RUN bundle install --without development test --deployment --clean
 
 # Precompile assets.
-RUN SECRET_KEY_BASE=build bundle exec rake assets:precompile
+RUN SECRET_KEY_BASE=`bundle exec rake secret` bundle exec rake assets:precompile
 
 EXPOSE 3000
 
