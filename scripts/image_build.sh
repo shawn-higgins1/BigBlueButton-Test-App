@@ -83,14 +83,6 @@ docker build -t $CD_DOCKER_REPO:$CD_REF_NAME .
 
 
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
-docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
+docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:$CD_REF_NAME
 
-# Publish latest and v2 if it id a release
-if [[ "$CD_REF_NAME" == *"release"* ]]; then
-  docker_image_id=$(docker images | grep -E "^$CD_DOCKER_REPO.*$CD_REF_NAME" | awk -e '{print $3}')
-  docker tag $docker_image_id $CD_DOCKER_REPO:latest
-  docker push $CD_DOCKER_REPO:latest
-  docker tag $docker_image_id $CD_DOCKER_REPO:v2
-  docker push $CD_DOCKER_REPO:v2
-fi
 exit 0
