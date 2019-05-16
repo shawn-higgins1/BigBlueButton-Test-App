@@ -6,7 +6,7 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
   web:
     entrypoint: [bin/start]
-    image: bigbluebutton/test-app
+    image: shawnhiggins/test-app
     container_name: test-app
     env_file: .env
     restart: unless-stopped

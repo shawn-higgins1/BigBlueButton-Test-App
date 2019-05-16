@@ -75,15 +75,14 @@ docker login -u="$CD_DOCKER_USERNAME" -p="$CD_DOCKER_PASSWORD"
 
 # Pull the image
 echo "#### Pulling Docker image $CD_DOCKER_REPO:$CD_REF_NAME"
-#docker pull $CD_DOCKER_REPO:$CD_REF_NAME
+#docker pull $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
 
 # Build the image
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being built"
 docker build -t $CD_DOCKER_REPO:$CD_REF_NAME .
 
-docker image ls
-
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
-docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:$CD_REF_NAME
+docker tag $CD_DOCKER_REPO $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
+docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
 
 exit 0
