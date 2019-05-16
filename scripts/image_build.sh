@@ -79,7 +79,7 @@ docker pull $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
 
 # Build the image
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being built"
-docker build --build-arg MASTER_KEY = $RAILS_MASTER_KEY -t $CD_DOCKER_REPO:$CD_REF_NAME .
+docker build --build-arg MASTER_KEY=$RAILS_MASTER_KEY -t $CD_DOCKER_REPO:$CD_REF_NAME .
 
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
 docker tag $CD_DOCKER_REPO:$CD_REF_NAME $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
