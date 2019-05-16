@@ -82,7 +82,7 @@ echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being built"
 docker build -t $CD_DOCKER_REPO:$CD_REF_NAME .
 
 echo "#### Docker image $CD_DOCKER_REPO:$CD_REF_NAME is being published"
-docker tag $CD_DOCKER_REPO $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
+docker tag $CD_DOCKER_REPO:$CD_REF_NAME $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
 docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
 
 exit 0
