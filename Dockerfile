@@ -1,4 +1,4 @@
-ARG MASTER_KEY=""
+ARG MASTER_KEY
 
 FROM ruby:2.6.3
 
@@ -26,7 +26,7 @@ ENV RAILS_ENV production
 # Adding project files.
 COPY . .
 
-RUN if [ "${MASTER_KEY}" != "" ]; then echo "${MASTER_KEY}"; export RAILS_MASTER_KEY="${MASTER_KEY}"; fi
+ENV RAILS_MASTER_KEY ${MASTER_KEY}
 
 # Install gems.
 RUN bundle install --without development test --deployment --clean && \
