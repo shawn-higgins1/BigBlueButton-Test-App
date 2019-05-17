@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app
+spec:
+  selector:
+    matchLabels:
+      app: test-app
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: test-app
+        track: stable
+    spec:
+      volumes:
+        - name: assets
+          hostPath: {}
+      containers:
+        - name: test-app
+          image: "shawnhiggins/test-app"
+          ports:
+            - name: http
+              containerPort: 3000
+          volumeMounts:
+            - name: assets
+              mountPath: /var/www/app/public
+
+        - name: nginx
+          image: "shawnhiggins/nginx-kub"
+          ports:
+            - name: http
+              containerPort: 5050
+          volumeMounts:
+            - name: assets
+              mountPath: /var/www/app/public
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/usr/sbin/nginx","-s","quit"]
+      

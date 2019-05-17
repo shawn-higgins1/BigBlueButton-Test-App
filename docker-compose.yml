@@ -17,7 +17,7 @@ services:
     depends_on:
       - db
   nginx:
-    image: shawnhiggins/nginx
+    image: shawnhiggins/nginx-com
     container_name: nginx
     volumes:
       - ./log:/var/www/app/log
