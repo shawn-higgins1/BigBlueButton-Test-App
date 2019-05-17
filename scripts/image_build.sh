@@ -79,10 +79,10 @@ docker pull $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
 
 # Build the image
 echo "#### Docker image  $CD_DOCKER_USERNAME/$CD_DOCKER_REPO is being built"
-docker build --build-arg MASTER_KEY=$RAILS_MASTER_KEY -t  $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest .
+docker build --build-arg MASTER_KEY=$RAILS_MASTER_KEY -t  $CD_DOCKER_USERNAME/$CD_DOCKER_REPO .
 
 echo "#### Docker image $CD_DOCKER_USERNAME/$CD_DOCKER_REPO is being published"
-docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO:latest
+docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
 
 # Pull the image
 echo "#### Pulling Docker image $CD_DOCKER_USERNAME/nginx"
@@ -90,9 +90,9 @@ docker pull $CD_DOCKER_USERNAME/nginx
 
 # Build the image
 echo "#### Docker image $CD_DOCKER_USERNAME/nginx is being built"
-docker build -t $CD_DOCKER_USERNAME/nginx:latest ./nginx
+docker build -t $CD_DOCKER_USERNAME/nginx ./nginx
 
 echo "#### Docker image $CD_DOCKER_USERNAME/nginx is being published"
-docker push $CD_DOCKER_USERNAME/nginx:latest
+docker push $CD_DOCKER_USERNAME/nginx
 
 exit 0
