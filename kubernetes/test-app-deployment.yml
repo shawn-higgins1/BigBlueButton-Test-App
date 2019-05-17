@@ -16,7 +16,7 @@ spec:
     spec:
       volumes:
         - name: assets
-          hostPath: {}
+          emptyDir: {}
       containers:
         - name: test-app
           image: "shawnhiggins/test-app"
@@ -39,4 +39,3 @@ spec:
             preStop:
               exec:
                 command: ["/usr/sbin/nginx","-s","quit"]
-      
