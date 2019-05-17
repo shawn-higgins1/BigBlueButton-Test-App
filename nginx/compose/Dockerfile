@@ -14,7 +14,7 @@ WORKDIR $RAILS_ROOT
 RUN mkdir log
 
 # Copy Nginx config template
-COPY ./test-app.conf /tmp/docker.nginx
+COPY ./test-app-compose.conf /tmp/docker.nginx
 
 # substitute variable references in the Nginx config template for real values from the environment 
 # put the final config in its place

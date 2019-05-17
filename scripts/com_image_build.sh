@@ -58,13 +58,6 @@ if [ "$CD_REF_NAME" != "master" ] && [[ "$CD_REF_NAME" != *"release"* ]] && ( -z
   exit 0
 fi
 
-# Set the version tag when it is a release or the commit sha was included.
-if [[ "$CD_REF_NAME" == *"release"* ]]; then
-  sed -i "s/VERSION =.*/VERSION = \"${CD_REF_NAME:8}\"/g" config/initializers/version.rb
-elif [ ! -z $CD_COMMIT_SHA ]; then
-  sed -i "s/VERSION =.*/VERSION = \"$CD_REF_NAME ($(expr substr $CD_COMMIT_SHA 1 8))\"/g" config/initializers/version.rb
-fi
-
 if [ -z "$CD_DOCKER_USERNAME" ] || [ -z "$CD_DOCKER_PASSWORD" ]; then
   echo "#### Docker image for $CD_DOCKER_REPO can't be published because CD_DOCKER_USERNAME or CD_DOCKER_PASSWORD are missing"
   exit 0
@@ -74,25 +67,14 @@ fi
 docker login -u="$CD_DOCKER_USERNAME" -p="$CD_DOCKER_PASSWORD"
 
 # Pull the image
-echo "#### Pulling Docker image $CD_DOCKER_USERNAME/$CD_DOCKER_REPO"
-docker pull $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
+echo "#### Pulling Docker image $CD_DOCKER_USERNAME/nginx-com"
+#docker pull $CD_DOCKER_USERNAME/nginx-com
 
 # Build the image
-echo "#### Docker image  $CD_DOCKER_USERNAME/$CD_DOCKER_REPO is being built"
-docker build --build-arg MASTER_KEY=$RAILS_MASTER_KEY -t  $CD_DOCKER_USERNAME/$CD_DOCKER_REPO .
+echo "#### Docker image $CD_DOCKER_USERNAME/nginx-com is being built"
+docker build -t $CD_DOCKER_USERNAME/nginx-com ./nginx/compose
 
-echo "#### Docker image $CD_DOCKER_USERNAME/$CD_DOCKER_REPO is being published"
-docker push $CD_DOCKER_USERNAME/$CD_DOCKER_REPO
-
-# Pull the image
-echo "#### Pulling Docker image $CD_DOCKER_USERNAME/nginx"
-docker pull $CD_DOCKER_USERNAME/nginx
-
-# Build the image
-echo "#### Docker image $CD_DOCKER_USERNAME/nginx is being built"
-docker build -t $CD_DOCKER_USERNAME/nginx ./nginx
-
-echo "#### Docker image $CD_DOCKER_USERNAME/nginx is being published"
-docker push $CD_DOCKER_USERNAME/nginx
+echo "#### Docker image $CD_DOCKER_USERNAME/nginx-com is being published"
+docker push $CD_DOCKER_USERNAME/nginx-com
 
 exit 0
